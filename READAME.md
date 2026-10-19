@@ -97,3 +97,37 @@ SELECT
 NA, EU, Japan, and other most favorite game genre, and revenues (million dollar) in the order: 
 Action ($529.05M), Action ($356.11M), Role-Playing ($167.24M), Action ($136.09M)
 
+## 5. Game publishers revenue order by Total Revenue from 4 markets
+```sql
+WITH publisher_sales AS (
+  SELECT 
+    publisher, ROUND(SUM(na_sales),2) AS `NA pulisher sale`, ROUND(SUM(eu_sales),2) AS `EU pulisher sale`, 
+    ROUND(SUM(jp_sales),2) AS `JP pulisher sale`, ROUND(SUM(other_sales)) AS `other pulisher sale`
+  FROM video_games_sales
+  WHERE `year` BETWEEN 2006 AND 2016
+  GROUP BY 1
+  )
+SELECT *, ROUND(`NA pulisher sale` + `EU pulisher sale` + `JP pulisher sale` + `other pulisher sale`,2) AS `Total revenue`
+FROM publisher_sales
+ORDER BY 2 DESC;
+```
+| Publisher | NA Publisher Sale | EU Publisher Sale | JP Publisher Sale | Other Publisher Sale | Total Revenue |
+|---|---:|---:|---:|---:|---:|
+| Nintendo | 337.78 | 235.34 | 195.04 | 63 | 831.16 |
+| Electronic Arts | 318.17 | 243.79 | 6.24 | 93 | 661.2 |
+| Activision | 299.81 | 153.2 | 5.26 | 64 | 522.27 |
+| Ubisoft | 203.62 | 137.25 | 4.95 | 44 | 389.82 |
+| Take-Two Interactive | 158.33 | 84.95 | 4.28 | 34 | 281.56 |
+| Microsoft Game Studios | 115.7 | 55.92 | 2.42 | 17 | 191.04 |
+| THQ | 107.14 | 45.54 | 0.81 | 22 | 175.49 |
+| Sony Computer Entertainment | 106.28 | 91.16 | 14.35 | 47 | 258.79 |
+| Warner Bros. Interactive Entertainment | 74.93 | 48.59 | 1.03 | 17 | 141.55 |
+| Disney Interactive Studios | 62.49 | 32.13 | 0.56 | 13 | 108.18 |
+| Sega | 59.83 | 60.88 | 23.75 | 19 | 163.46 |
+| Square Enix | 43.26 | 30.21 | 40.94 | 13 | 127.41 |
+| Konami Digital Entertainment | 39.41 | 36.69 | 36.46 | 18 | 130.56 |
+| Capcom | 38.68 | 21.61 | 36.91 | 9 | 106.2 |
+| Bethesda Softworks | 38.4 | 29.8 | 1.44 | 10 | 79.64 |
+| Namco Bandai Games | 36.66 | 26.88 | 69.8 | 10 | 143.34 |
+| LucasArts | 33.08 | 16.8 | 0.02 | 8 | 57.9 |
+
