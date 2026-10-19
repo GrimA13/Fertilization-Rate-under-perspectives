@@ -1,5 +1,5 @@
 # Game sales revenue analysis in 4 markets North America, Japan, Europe, and other (2006 to 2016)
-(The Data credit from Ulrik Thyge Pedersen, thank you for sharing your [work](https://www.kaggle.com/datasets/ulrikthygepedersen/video-games-sales/data))
+(The [Data](https://www.kaggle.com/datasets/ulrikthygepedersen/video-games-sales/data) belongs to Ulrik Thyge Pedersen, thank you for sharing)
 ## 1. Summary game sales revenue (millions dollar) in 4 market and percent of each market's sale to total sale
 ```sql
 WITH 
