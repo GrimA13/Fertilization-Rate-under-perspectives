@@ -97,7 +97,7 @@ SELECT
 NA, EU, Japan, and other most favorite game genre, and revenues (million dollar) in the order: 
 Action ($529.05M), Action ($356.11M), Role-Playing ($167.24M), Action ($136.09M)
 
-## 5. Game publishers revenue ordered by Total Revenue from 4 markets
+## 5. Game publishers revenue ordered from 4 markets
 ```sql
 WITH publisher_sales AS (
   SELECT 
