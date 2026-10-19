@@ -26,7 +26,7 @@ FROM total_revenue;
 
  North America has the biggest market share with 46.59%
 
- ## 2. Which 5 game platforms were best-selling
+ ## 2. Which 5 gaming platforms were best-selling
  ```sql
 SELECT platform, ROUND(SUM(global_sales),2) AS `Top 5 platform`
 FROM video_games_sales
@@ -40,5 +40,27 @@ platform|Top 5 platform|
 |X360	|961.29
 |PS3	|949.35
 |Wii	|909.81
-|DS	  |669.79
+|DS	    |669.79
 |PS4	|278.07
+
+Xbox360, PS3, Wii, DS, and PS4 are most the used platform that having most highest sale revenue
+
+## 3. Which gaming platforms is the most favorite platform in 4 markets
+```sql
+WITH platform_sales AS (
+  SELECT platform, SUM(na_sales) AS platform_na_sales, SUM(eu_sales) AS platform_eu_sales, 
+         SUM(jp_sales) AS platform_jp_sales, SUM(other_sales) AS platform_other_sales
+FROM video_games_sales
+WHERE `year` BETWEEN 2006 AND 2016
+GROUP BY 1
+)
+SELECT 
+  (select platform from platform_sales
+  order by platform_na_sales desc limit 1) AS `fav platform in NA`,
+  (select platform from platform_sales
+  order by platform_eu_sales desc limit 1) AS `fav platform in EU`,
+  (select platform from platform_sales
+  order by platform_jp_sales desc limit 1) AS `fav platform in JP`,
+  (select platform from platform_sales
+  order by platform_other_sales desc limit 1) AS `fav platform in others`;
+```
