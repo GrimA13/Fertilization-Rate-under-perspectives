@@ -27,7 +27,7 @@ FROM total_revenue;
 
  North America has the biggest market share with $2377.94M (46.59%). Second place is EU with $554.91M (30.11%). Third and fourth sale are other and Japan are $554.91M (11.11%), $558.90M (11.19%) respectively
 
- ## 2. Which 5 gaming platforms were best-selling
+ ## 2. Which 5 gaming platforms have the highest revenue?
  ```sql
 SELECT platform, ROUND(SUM(global_sales),2) AS `Top 5 platform`
 FROM video_games_sales
@@ -46,7 +46,7 @@ LIMIT 5;
 
 Xbox360, PS3, Wii, DS, and PS4 are most the used platform that having most highest sale revenue
 
-## 3. Which gaming platforms is the most favorite in 4 markets
+## 3. Which gaming platforms is the most popular in 4 markets?
 ```sql
 WITH platform_sales AS (
   SELECT platform, SUM(na_sales) AS platform_na_sales, SUM(eu_sales) AS platform_eu_sales, 
@@ -69,9 +69,9 @@ SELECT
 |---|---|---|---:|
 |X360|PS3|DS|PS3|
 
-The most favorite gaming platform in NA, EU, Japan, and other respectively is: Xbox360, PS3, DS, PS3
+The most popular gaming platforms in NA, EU, Japan, and other respectively is: Xbox360, PS3, DS, PS3
 
-## 4. The bestselling game genre with total revenue of that genre in each market
+## 4. The bestselling game genre in each market with total revenue of that genre 
 ```sql
 WITH genre_sales AS (
   SELECT genre, SUM(na_sales) AS genre_na_sales, SUM(eu_sales) AS genre_eu_sales, 
@@ -97,37 +97,41 @@ SELECT
 NA, EU, Japan, and other most favorite game genre, and revenues (million dollar) in the order: 
 Action ($529.05M), Action ($356.11M), Role-Playing ($167.24M), Action ($136.09M)
 
-## 5. Game publishers revenue ordered from 4 markets
+## 5. Top 20 game publishers with highest revenue 
 ```sql
 WITH publisher_sales AS (
   SELECT 
-    publisher, ROUND(SUM(na_sales),2) AS `NA pulisher sale`, ROUND(SUM(eu_sales),2) AS `EU pulisher sale`, 
-    ROUND(SUM(jp_sales),2) AS `JP pulisher sale`, ROUND(SUM(other_sales)) AS `other pulisher sale`
+    publisher, ROUND(SUM(na_sales),2) AS `NA publisher sale`, ROUND(SUM(eu_sales),2) AS `EU publisher sale`, 
+    ROUND(SUM(jp_sales),2) AS `JP publisher sale`, ROUND(SUM(other_sales)) AS `other publisher sale`,
+    ROUND(SUM(na_sales) + SUM(eu_sales) + SUM(jp_sales) + SUM(other_sales), 2) AS `Total publisher revenue`
   FROM video_games_sales
   WHERE `year` BETWEEN 2006 AND 2016
   GROUP BY 1
   )
-SELECT *, ROUND(`NA pulisher sale` + `EU pulisher sale` + `JP pulisher sale` + `other pulisher sale`,2) AS `Total revenue`
+SELECT *,
+  DENSE_RANK () OVER (ORDER BY `Total publisher revenue` DESC) AS `publisher ranking`
 FROM publisher_sales
-ORDER BY 2 DESC;
+;
 ```
-| Publisher | NA Publisher Sale | EU Publisher Sale | JP Publisher Sale | Other Publisher Sale | Total Revenue |
-|---|---:|---:|---:|---:|---:|
-| Nintendo | 337.78 | 235.34 | 195.04 | 63 | 831.16 |
-| Electronic Arts | 318.17 | 243.79 | 6.24 | 93 | 661.2 |
-| Activision | 299.81 | 153.2 | 5.26 | 64 | 522.27 |
-| Ubisoft | 203.62 | 137.25 | 4.95 | 44 | 389.82 |
-| Take-Two Interactive | 158.33 | 84.95 | 4.28 | 34 | 281.56 |
-| Microsoft Game Studios | 115.7 | 55.92 | 2.42 | 17 | 191.04 |
-| THQ | 107.14 | 45.54 | 0.81 | 22 | 175.49 |
-| Sony Computer Entertainment | 106.28 | 91.16 | 14.35 | 47 | 258.79 |
-| Warner Bros. Interactive Entertainment | 74.93 | 48.59 | 1.03 | 17 | 141.55 |
-| Disney Interactive Studios | 62.49 | 32.13 | 0.56 | 13 | 108.18 |
-| Sega | 59.83 | 60.88 | 23.75 | 19 | 163.46 |
-| Square Enix | 43.26 | 30.21 | 40.94 | 13 | 127.41 |
-| Konami Digital Entertainment | 39.41 | 36.69 | 36.46 | 18 | 130.56 |
-| Capcom | 38.68 | 21.61 | 36.91 | 9 | 106.2 |
-| Bethesda Softworks | 38.4 | 29.8 | 1.44 | 10 | 79.64 |
-| Namco Bandai Games | 36.66 | 26.88 | 69.8 | 10 | 143.34 |
-| LucasArts | 33.08 | 16.8 | 0.02 | 8 | 57.9 |
-
+| Publisher | NA Publisher Sale | EU Publisher Sale | JP Publisher Sale | Other Publisher Sale | Total Publisher Revenue | Publisher Ranking |
+|---|---:|---:|---:|---:|---:|---:|
+| Nintendo | 337.78 | 235.34 | 195.04 | 63 | 830.85 | 1 |
+| Electronic Arts | 318.17 | 243.79 | 6.24 | 93 | 660.87 | 2 |
+| Activision | 299.81 | 153.2 | 5.26 | 64 | 521.79 | 3 |
+| Ubisoft | 203.62 | 137.25 | 4.95 | 44 | 390.04 | 4 |
+| Take-Two Interactive | 158.33 | 84.95 | 4.28 | 34 | 281.89 | 5 |
+| Sony Computer Entertainment | 106.28 | 91.16 | 14.35 | 47 | 258.84 | 6 |
+| Microsoft Game Studios | 115.7 | 55.92 | 2.42 | 17 | 190.85 | 7 |
+| THQ | 107.14 | 45.54 | 0.81 | 22 | 175.33 | 8 |
+| Sega | 59.83 | 60.88 | 23.75 | 19 | 163.94 | 9 |
+| Namco Bandai Games | 36.66 | 26.88 | 69.8 | 10 | 142.9 | 10 |
+| Warner Bros. Interactive Entertainment | 74.93 | 48.59 | 1.03 | 17 | 141.62 | 11 |
+| Konami Digital Entertainment | 39.41 | 36.69 | 36.46 | 18 | 130.71 | 12 |
+| Square Enix | 43.26 | 30.21 | 40.94 | 13 | 127.52 | 13 |
+| Disney Interactive Studios | 62.49 | 32.13 | 0.56 | 13 | 107.98 | 14 |
+| Capcom | 38.68 | 21.61 | 36.91 | 9 | 106.28 | 15 |
+| Bethesda Softworks | 38.4 | 29.8 | 1.44 | 10 | 79.52 | 16 |
+| LucasArts | 33.08 | 16.8 | 0.02 | 8 | 57.77 | 17 |
+| 505 Games | 30.38 | 15.9 | 1.72 | 5 | 53.24 | 18 |
+| Tecmo Koei | 9.08 | 4.43 | 16.7 | 2 | 32.32 | 19 |
+| Atari | 18.39 | 4.81 | 3.35 | 4 | 30.59 | 20 |
