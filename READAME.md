@@ -111,7 +111,7 @@ WITH publisher_sales AS (
 SELECT *,
   DENSE_RANK () OVER (ORDER BY `Total publisher revenue` DESC) AS `publisher ranking`
 FROM publisher_sales
-;
+LIMIT 20;
 ```
 | Publisher | NA Publisher Sale | EU Publisher Sale | JP Publisher Sale | Other Publisher Sale | Total Publisher Revenue | Publisher Ranking |
 |---|---:|---:|---:|---:|---:|---:|
